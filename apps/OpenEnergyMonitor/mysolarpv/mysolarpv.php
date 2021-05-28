@@ -83,7 +83,7 @@
 <section id="app-block" style="display:none" class="block">
     <div class="d-flex justify-content-between">
         <div>
-            <h5 class="electric-title mb-0 text-md-larger text-light"><?php echo _('USE NOW') ?></h5>
+            <h5 class="electric-title mb-0 text-md-larger text-light"><?php echo _('ENERGIEBEDARF') ?></h5>
             <h2 class="power-value display-sm-4 display-md-3 display-lg-2 mt-0 mb-lg-3 text-primary"><span class="usenow">0</span><span class="power-unit"></span></h2>
         </div>
         <div class="text-xs-center">
@@ -91,11 +91,19 @@
             <h2 class="power-value display-sm-4 display-md-3 display-lg-2 mt-0 mb-lg-3"><span class="balance"></span><span class="power-unit"></span></h2>
         </div>
         <div class="text-xs-right">
-            <h5 class="electric-title mb-0 text-md-larger text-light"><?php echo _('SOLAR PV') ?></h5>
+            <h5 class="electric-title mb-0 text-md-larger text-light"><?php echo _('PHOTOVOLTAIK') ?></h5>
             <h2 class="power-value display-sm-4 display-md-3 display-lg-2 mt-0 mb-lg-3 text-warning "><span class="solarnow"></span><span class="power-unit"></span></h2>
         </div>
     </div>
-    
+
+     <div class="text-primary">
+            <h5>erspart: &#x20AC <span class="savednow">0</span><span> ---- </span>
+            Temperatur: <span class="tempnow">0</span> &degC<span> ---- </span>
+            Helligkeit: <span class="luxnow">0</span> lux<span> ---- </span>
+            PV heute: <span class="daynow">0</span> kW </h5>
+     </div>
+
+
     <?php include(dirname(__DIR__).'/graph-nav.php'); ?>
 
     <div id="placeholder_bound" class="chart-placeholder">
@@ -104,21 +112,21 @@
     
     <div id="breakdown" class="d-flex justify-content-between py-lg-3 text-light">
         <div class="appbox mb-3 text-primary">
-            <h5 class="appbox-title mb-1 text-light text-md-larger"><?php echo _('USE') ?></h5>
+            <h5 class="appbox-title mb-1 text-light text-md-larger"><?php echo _('BEDARF') ?></h5>
             <h2 class="appbox-value total_use_kwh my-0">--</h2>
             <h5 class="appbox-units my-0">
                 kWh
             </h5>
         </div>
         <div class="appbox mb-3 text-warning">
-            <h5 class="appbox-title mb-1 text-light text-md-larger px-1"><?php echo _('SOLAR') ?></h5>
+            <h5 class="appbox-title mb-1 text-light text-md-larger px-1"><?php echo _('PV') ?></h5>
             <h2 class="appbox-value total_solar_kwh my-0">--</h2>
             <h5 class="appbox-units my-0">
                 kWh
             </h5>
         </div>
         <div class="appbox mb-3 text-success">
-            <h5 class="appbox-title mb-1 text-light text-md-larger"><?php echo _('DIRECT') ?></h5>
+            <h5 class="appbox-title mb-1 text-light text-md-larger"><?php echo _('GENUTZT') ?></h5>
             <h2 class="appbox-value total_use_direct_prc my-0">--</h2>
             <h5 class="appbox-units my-0">
                 <span id="total_use_direct_kwh"></span>
@@ -126,7 +134,7 @@
             </h5>
         </div>
         <div class="appbox mb-3 text-tertiary">
-            <h5 class="appbox-title mb-1 text-light text-md-larger px-1"><?php echo _('EXPORT') ?></h5>
+            <h5 class="appbox-title mb-1 text-light text-md-larger px-1"><?php echo _('VERKAUFT') ?></h5>
             <h2 class="appbox-value total_export_prc my-0">--</h2>
             <h5 class="appbox-units my-0">
                 <span id="total_export_kwh"></span>
@@ -134,7 +142,7 @@
             </h5>
         </div>
         <div class="appbox mb-3 text-danger">
-            <h5 class="appbox-title mb-1 text-light text-md-larger"><?php echo _('GRID') ?></h5>
+            <h5 class="appbox-title mb-1 text-light text-md-larger"><?php echo _('GEKAUFT') ?></h5>
             <h2 class="appbox-value total_import_prc my-0">--</h2>
             <h5 class="appbox-units my-0">
                 <span id="total_import_kwh"></span>
@@ -176,8 +184,8 @@ function getTranslations(){
         'Cumulative grid import in kWh': "<?php echo _('Cumulative grid import in kWh') ?>",
         'Display power as kW': "<?php echo _('Display power as kW') ?>",
         'PERFECT BALANCE': "<?php echo _('PERFECT BALANCE') ?>",
-        'EXPORTING': "<?php echo _('EXPORTING') ?>",
-        'IMPORTING': "<?php echo _('IMPORTING') ?>",
+        'EXPORTING': "<?php echo _('LIEFERE') ?>",
+        'IMPORTING': "<?php echo _('KAUFE') ?>",
     }
 }
 </script>
@@ -212,7 +220,11 @@ config.app = {
     "use_kwh":{"optional":true, "type":"feed", "autoname":"use_kwh", "engine":5, "description":_("Cumulative use in kWh")},
     "solar_kwh":{"optional":true, "type":"feed", "autoname":"solar_kwh", "engine":5, "description":_("Cumulative solar generation in kWh")},
     "import_kwh":{"optional":true, "type":"feed", "autoname":"import_kwh", "engine":5, "description":_("Cumulative grid import in kWh")},
-    "kw":{"type":"checkbox", "default":0, "name": "Show kW", "description":_("Display power as kW")}
+    "kw":{"type":"checkbox", "default":0, "name": "Show kW", "description":_("Display power as kW")},
+    "temperatur":{"type":"feed", "autoname":"temperatur", "engine":"5", "description":_("Aussentemperatur")},
+    "lux":{"type":"feed", "autoname":"lux", "engine":"5", "description":_("Aussenhelligkeit")},
+    "saved":{"type":"feed", "autoname":"saved", "engine":"5", "description":_("Durch die PV gespart")},
+    "pvday":{"type":"feed", "autoname":"pvday", "engine":"5", "description":_("Tageserzeugung der PV Anlage")}
     //"import_unitcost":{"type":"value", "default":0.1508, "name": "Import unit cost", "description":"Unit cost of imported grid electricity"}
 };
 config.name = "<?php echo $name; ?>";
@@ -247,6 +259,10 @@ function init()
     var solar_kwh = config.app.solar_kwh.value;
     var use_kwh = config.app.use_kwh.value;
     var import_kwh = config.app.import_kwh.value;
+    var lux = config.app.lux.value;
+    var temperatur = config.app.temperatur.value;
+    var saved = config.app.saved.value;
+    var pvday = config.app.pvday.value;
 
     var timeWindow = (3600000*6.0*1);
     view.end = +new Date;
@@ -417,6 +433,11 @@ function livefn()
     if (feeds === null) { return; }
     var solar_now = parseInt(feeds[config.app.solar.value].value);
     var use_now = parseInt(feeds[config.app.use.value].value);
+    var lux_now = parseInt(feeds[config.app.lux.value].value);
+    var temp_now = parseInt(feeds[config.app.temperatur.value].value);
+    var saved_now = parseInt(feeds[config.app.saved.value].value);
+    var pv_now = parseInt(feeds[config.app.pvday.value].value);
+
 
     if (autoupdate) {
         var updatetimesolar = feeds[config.app.solar.value].time;
@@ -468,6 +489,11 @@ function livefn()
     $('.power-unit').text(powerUnit)
     $(".solarnow").html(solar_now)
     $(".usenow").html(use_now)
+    $(".luxnow").html(lux_now)
+    $(".tempnow").html(temp_now)
+    $(".savednow").html(saved_now)
+    $(".daynow").html(pv_now)
+
     $(".balance").text(balance)
     
     // Only redraw the graph if its the power graph and auto update is turned on
@@ -600,8 +626,8 @@ function draw_powergraph() {
     options.xaxis.max = view.end;
     
     var series = [
-        {data:gen_data, name:'solar', color: "#dccc1f", lines:{lineWidth:0, fill:1.0}},
-        {data:use_data, name:'use', color: "#0699fa",lines:{lineWidth:0, fill:0.8}}
+        {data:gen_data, name:'PV', color: "#dccc1f", lines:{lineWidth:0, fill:1.0}},
+        {data:use_data, name:'BEDARF', color: "#0699fa",lines:{lineWidth:0, fill:0.8}}
     ];
     
     if (show_balance_line) series.push({data:store_data, yaxis:2, name:'balance', color: 'green',xcolor: "#888"});
@@ -645,7 +671,7 @@ function powergraph_events() {
             var tooltip_items = [];
             var date = new Date(item.datapoint[0]);
 
-            tooltip_items.push(["TIME", dateFormat(date, 'HH:MM'), ""]);
+            tooltip_items.push(["ZEIT", dateFormat(date, 'HH:MM'), ""]);
             if (powerseries) {
                 for (i = 0; i < powerseries.length; i++) {
                     var series = powerseries[i];
